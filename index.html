@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Automação Raphinha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos Gerais e Reset */
+        body {
+            font-family: 'Open Sans', Arial, sans-serif; /* Fonte mais suave */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #F9F5FF; /* Fundo lavanda bem claro */
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            color: #4A235A; /* Texto em tom de roxo escuro */
+            line-height: 1.6;
+        }
+
+        /* Container Principal */
+        .container {
+            background-color: #FFFFFF; /* Fundo branco */
+            padding: 30px;
+            border-radius: 15px; /* Bordas mais arredondadas */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+            text-align: center;
+            max-width: 450px; /* Um pouco mais largo para melhor leitura */
+            width: 100%;
+            transition: transform 0.3s ease; /* Transição para interações */
+        }
+        .container:hover {
+            transform: translateY(-5px); /* Efeito sutil ao passar o mouse */
+        }
+
+        /* Título */
+        h1 {
+            color: #6A0DAD; /* Roxo vibrante */
+            margin-bottom: 30px;
+            font-size: 2.2em; /* Fonte maior para melhor legibilidade */
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Rótulos */
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #5A2D7D; /* Roxo médio */
+            text-align: left;
+            font-size: 1.1em;
+        }
+
+        /* Campo de Input */
+        input[type="text"] {
+            width: calc(100% - 22px); /* Ajuste para padding */
+            padding: 12px;
+            margin-bottom: 25px;
+            border: 2px solid #DDA0DD; /* Borda rosa/lavanda */
+            border-radius: 8px; /* Bordas arredondadas */
+            font-size: 1.1em;
+            color: #4A235A;
+            box-sizing: border-box; /* Garante que padding não estoure a largura */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #8A2BE2; /* Borda roxa ao focar */
+            box-shadow: 0 0 8px rgba(138, 43, 226, 0.3); /* Sombra suave ao focar */
+        }
+
+        /* Grupo de Botões para Responsividade */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap; /* Permite que os botões quebrem a linha */
+            justify-content: center;
+            gap: 15px; /* Espaçamento entre os botões */
+            margin-top: 15px;
+        }
+
+        /* Botões */
+        button {
+            flex: 1 1 calc(50% - 15px); /* Para dois botões na linha, com gap */
+            max-width: calc(50% - 15px); /* Limite para flexibilidade */
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px; /* Bordas mais arredondadas */
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: white;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        button:active {
+            transform: translateY(0); /* Efeito de 'clique' */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Botão Ativar */
+        button#playBtn {
+            background-color: #8A2BE2; /* Roxo Azulado */
+        }
+        button#playBtn:hover {
+            background-color: #6A0DAD; /* Roxo mais escuro no hover */
+        }
+
+        /* Botão Pausar */
+        button#pauseBtn {
+            background-color: #DC143C; /* Vermelho mais forte */
+        }
+        button#pauseBtn:hover {
+            background-color: #B22222; /* Vermelho mais escuro no hover */
+        }
+
+        /* Mensagens de Feedback */
+        #message {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: left;
+            line-height: 1.4;
+            display: none; /* Escondido por padrão */
+            word-wrap: break-word; /* Garante que o texto não vaze */
+        }
+        #message.success {
+            background-color: #D8BFD8; /* Fundo rosa claro */
+            color: #4B0082; /* Texto roxo escuro */
+            border: 1px solid #9932CC; /* Borda roxa */
+        }
+        #message.error {
+            background-color: #FFC0CB; /* Fundo rosa forte */
+            color: #8B0000; /* Texto vermelho escuro */
+            border: 1px solid #FF69B4; /* Borda rosa vibrante */
+        }
+
+        /* Media Queries para Responsividade Mobile */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                padding: 25px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            }
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 25px;
+            }
+            label {
+                font-size: 1em;
+            }
+            input[type="text"] {
+                font-size: 1em;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            .button-group {
+                flex-direction: column; /* Botões empilham em telas menores */
+                gap: 10px;
+            }
+            button {
+                width: 100%; /* Botões ocupam a largura total */
+                max-width: 100%;
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+            #message {
+                font-size: 0.95em;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Controle de Automação da Lisa</h1>
+        <label for="phoneNumber">Número do Contato:</label>
+        <input type="text" id="phoneNumber" placeholder="Ex: 553598534311 (Brasil) ou 447522991893 (Reino Unido)">
+
+        <div class="button-group">
+            <button id="playBtn">🌸 Ativar Automação</button>
+            <button id="pauseBtn">⏸️ Pausar Automação</button>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // *** PASSO MUITO IMPORTANTE: COLE A URL DO SEU WEBHOOK N8N AQUI ***
+        const N8N_WEBHOOK_URL = 'https://n8n-n8n.he93v9.easypanel.host/webhook/3dc71771-603d-4bd9-9a41-1b6279ef38bd'; 
+
+        async function sendCommand(command) {
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'none';
+            messageDiv.className = '';
+
+            if (!phoneNumber) {
+                messageDiv.textContent = 'Por favor, digite o número do contato.';
+                messageDiv.className = 'error';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            // Validação que aceita APENAS dígitos.
+            if (!/^\d+$/.test(phoneNumber)) {
+                messageDiv.textContent = 'Formato de número inválido. Use apenas números (inclua o código do país, sem o +).';
+                messageDiv.className = 'error';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(N8N_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        command: command,
+                        phoneNumber: phoneNumber
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.status === 'success') {
+                    messageDiv.textContent = `Comando "${command === '/play' ? 'Ativar' : 'Pausar'}" enviado para ${phoneNumber}: ${data.message}`;
+                    messageDiv.className = 'success';
+                } else {
+                    messageDiv.textContent = `Erro ao enviar comando: ${data.message || 'Resposta inesperada do servidor.'}`;
+                    messageDiv.className = 'error';
+                }
+            } catch (error) {
+                messageDiv.textContent = `Erro de conexão: ${error.message}. Verifique a URL do n8n ou sua internet.`;
+                messageDiv.className = 'error';
+            }
+            messageDiv.style.display = 'block';
+        }
+
+        document.getElementById('playBtn').addEventListener('click', () => sendCommand('/play'));
+        document.getElementById('pauseBtn').addEventListener('click', () => sendCommand('/pause'));
+    </script>
+</body>
+</html>
